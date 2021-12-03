@@ -7,3 +7,7 @@ To run:
 3. For figures 1 and 2, run compare_node_degree.py
 4. For figures 3 and 4, run comparison_over_time.py
 5. For figures 5 and 6, run classification.py 
+
+All three files have a country variable in - set this to the different countries (US, UK, DE) to get results for said country
+
+classification and compare_node_degree have variables to set for the different window types. 
