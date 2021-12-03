@@ -1,0 +1,9 @@
+This repo contains the code for the paper "An Investigation Into the Effects and Effectiveness
+of Correlation Network Filtration Methods with Financial Returns". 
+
+To run:
+1. Set up a virtualenv
+2. pip install -r requirements.txt
+3. For figures 1 and 2, run compare_node_degree.py
+4. For figures 3 and 4, run comparison_over_time.py
+5. For figures 5 and 6, run classification.py 
