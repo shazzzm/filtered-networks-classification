@@ -4,10 +4,10 @@ of Correlation Network Filtration Methods with Financial Returns".
 To run:
 1. Set up a virtualenv
 2. pip install -r requirements.txt
-3. For figures 1 and 2, run compare_node_degree.py
-4. For figures 3 and 4, run comparison_over_time.py
-5. For figures 5 and 6, run classification.py 
+3. For figures 2,3,4,5,6,7 run compare_node_degree.py
+4. For figures 8 and 9 run comparison_over_time.py
+5. For figures 10 - 19, run classification.py 
 
-All three files have a country variable in - set this to the different countries (US, UK, DE) to get results for said country
+All three files have a country variable in - set this to the different countries (US, UK, DE, IN, CH) to get results for said country
 
 classification and compare_node_degree have variables to set for the different window types. 

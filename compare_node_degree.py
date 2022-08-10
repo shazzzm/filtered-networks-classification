@@ -19,8 +19,8 @@ font = {'family' : 'normal',
         'size'   : 16}
 matplotlib.rc('font', **font)
 
-country = 'DE'
-window_type = 'min' # window type = max, min or median volatility
+country = 'IN'
+window_type = 'med' # window type = max, min or median volatility
 
 if country == 'US':
     ps = np.arange(10, 210, 10)
@@ -28,6 +28,10 @@ elif country == 'UK':
     ps = np.arange(10, 70, 5)
 elif country == 'DE':
     ps = np.arange(10, 23, 1)
+elif country == "CH":
+    ps = np.arange(10, 30, 1)
+elif country == "IN":
+    ps = np.arange(10, 45, 5)
 
 max_p = max(ps)
 
@@ -38,7 +42,10 @@ elif country == "UK":
     df = pd.read_csv("FTSE100.csv", index_col=0)
 elif country == "DE":
     df = pd.read_csv("DAX30.csv", index_col=0)
-
+elif country == "CH":
+    df = pd.read_csv("SSE50.csv", index_col=0)
+elif country == "IN":
+    df = pd.read_csv("NIFTY50.csv", index_col=0)
 company_sectors = df.iloc[0, :].values
 company_names = df.T.index.values
 

@@ -11,6 +11,14 @@ import operator
 import matplotlib
 import topcorr
 from scipy.stats import spearmanr
+from sklearn.covariance import ledoit_wolf
+from itertools import combinations
+
+def gini(x):
+    n = x.shape[0]
+    diffs = sum(abs(i - j) for i, j in combinations(x, r=2))
+    return diffs / (2 * n**2 * x.mean())
+
 def calculate_corr_between_graphs(G, M):
     """
     Calculates the correlation between the edge weights of a networkx graph G
@@ -20,6 +28,19 @@ def calculate_corr_between_graphs(G, M):
     p = M.shape[0]
     ind = ~np.eye(p, dtype=bool)
     return np.corrcoef(M_2[ind].flatten(), M[ind].flatten())[0, 1]
+
+def calculate_graph_diff(M_1, M_2, is_nx_graph = False):
+    """
+    Calculates the normalized weighted difference between two graphs
+    """
+    nodes = np.arange(p).tolist()
+
+    if is_nx_graph:
+        M_1 = nx.to_numpy_array(M_1, nodes)
+        M_2 = nx.to_numpy_array(M_2, nodes)
+
+    diff = np.sum(np.abs(M_1 - M_2).flatten())
+    return( diff / (np.sum(np.abs(M_1).flatten()) * np.sum(np.abs((M_2)).flatten())))
 
 # Set font size
 font = {'family' : 'normal',
@@ -31,7 +52,7 @@ matplotlib.rc('font', **font)
 plt.rcParams.update({'figure.max_open_warning': 0})
 
 # Set the country you desire to analyze
-country = "US"
+country = "DE"
 if country == "DE":
     df = pd.read_csv("DAX30.csv", index_col=0)        
     window_size = 252 * 2
@@ -40,6 +61,12 @@ elif country == "UK":
     window_size = 252 * 2
 elif country == "US":
     df = pd.read_csv("S&P500.csv", index_col=0)
+    window_size = 252 * 2
+elif country == "CH":
+    df = pd.read_csv("SSE50.csv", index_col=0)
+    window_size = 252 * 2
+elif country == "IN":
+    df = pd.read_csv("NIFTY50.csv", index_col=0)
     window_size = 252 * 2
 
 company_sectors = df.iloc[0, :].values
@@ -73,12 +100,19 @@ edge_corr_mst = []
 edge_corr_pmfg = []
 edge_corr_tmfg = []
 
+
 for x in range(no_runs):
     print("Run %s" % x)
 
     X_new = X[x*slide_size:x*slide_size+window_size, :]
     C = np.corrcoef(X_new.T)
     C = np.abs(C)
+    
+    # Get the correlation coefficients
+    ind = np.triu_indices(p, 1)
+    corr_vals = C[ind].flatten()
+
+    C_lw = np.abs(ledoit_wolf(X_new)[0])
 
     nodes = np.arange(p).tolist()
     G_mst_1 = topcorr.mst(C)
